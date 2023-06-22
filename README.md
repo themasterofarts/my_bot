@@ -31,3 +31,7 @@ ros2 launch my_bot launch_sim.launch.py
 ```
 ros2 run my_bot vitual_gps.py
 ```
+
+https://github.com/Klein237/my_bot/assets/129269142/86448812-f561-4524-991d-61145c69f5be
+
+
