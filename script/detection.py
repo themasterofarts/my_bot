@@ -31,25 +31,45 @@ class MinimalSubscriber(Node):
         self.out = String()
 
     def listener_callback(self, msg):
-        self.get_logger().info( "msg.scan_time" )
+        #self.get_logger().info( 'Obstacle detection is running...' )
         self.detect(msg.ranges)
-       # msg_1 = String()
-       # msg_1.data = "red"
         self.publisher_.publish(self.out)
 
 
     def detect(self, rang):
-        for i in range(len(rang)):
-            if(rang[i]>2):
-                self.out.data = "red"
 
-        
+        state = ["Red","Green","Orange"]
+        count = 0
+        for i in range (len(rang)):
+            if rang[i] < 2:
+                count +=1
+                if count == 10 :
+                    self.out.data = state[0]
+                    self.get_logger().info( 'Alarm level Red..' )
+                    count = 0
 
+            elif rang[i] >= 2 and rang[i] < 4 :
+                    count += 1 
+                    if count == 10 :
+                        self.out.data = state[1]
+                        self.get_logger().info( 'Alarm level green..' )
+                        count = 0
 
-    # def publish_alarm(self):
-    #      msg_1 = String()
-    #      msg_1.data = "red"
-    #      self.publisher_.publish(msg_1)
+            elif rang[i] >= 4 and rang[i] < 6 : 
+                count += 1 
+                if count == 10 :
+                    self.out.data = state[2]
+                    self.get_logger().info( 'Alarm level orange..' )
+                    count = 0
+           
+
+            
+### current result ###
+# le niveau d'alarme est detecté comme espéré
+# pour le niveau orange reste actif à cause des autres rayons, il faut delimiter et faire des releases d'alarmes
+# rendre la detection robuste           il faut faire le reset des alarmes  (une fois que la variable est dans le selt.out, elle ne change jusqu'a nouvelle detection
+# pour le reset, il faut ajouter un clean d'alarme)
+            
         
         
         
